@@ -9,6 +9,7 @@ import com.e1i3.danum.response.ReadStoreResponses;
 import com.e1i3.danum.response.UpdateStatusToStoreResponse;
 import com.e1i3.danum.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("")
+@Tag(name = "유저 API", description = "유저 관련 기능 API입니다.")
 public class UserController {
     private final UserService userService;
-
+    @Operation(summary = "유저 등록", description = "유저 정보를 기반으로 등록")
     @PostMapping("/user/sign")
     public ResponseEntity<CreateUserResponse> createUser(@RequestBody CreateUserRequest createUserRequest){
         CreateUserResponse createUserResponse = userService.createUser(createUserRequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(createUserResponse);
     }
+    @Operation(summary = "사용자 상태를 사장님 상태로 전환", description = "사용자 상태를 사장님 상태로 전환")
     @PostMapping("/user/status-store")
     public ResponseEntity<UpdateStatusToStoreResponse> updateStatusToStore(@RequestBody UpdateStatusToStoreRequest updateStatusToStoreRequest) throws Exception {
         UpdateStatusToStoreResponse updateStatusToStoreResponse = userService.updateStatusToStore(updateStatusToStoreRequest);
