@@ -9,6 +9,7 @@ import com.e1i3.danum.response.ReadStoreResponses;
 import com.e1i3.danum.s3.S3Uploader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StoreService {
     private final StoreRepository storeRepository;
 
@@ -34,9 +36,14 @@ public class StoreService {
     public void registerSeller(MultipartFile file, StoreRegisterRequestDto requestDto) throws IOException {
         String storedFileName = s3Uploader.upload(file,"store-images");
         requestDto.setStoreUrl(storedFileName);
+        System.out.println(1);
         User currentUser = isUser(requestDto.getUserId(),requestDto.getType());
+        System.out.println(2);
         Store newStore = requestDto.toEntity(currentUser);
+        log.info(requestDto.getUserId().toString());
+        System.out.println(3);
         Store savedStore = storeRepository.save(newStore);
+        System.out.println(4);
     }
 
 
