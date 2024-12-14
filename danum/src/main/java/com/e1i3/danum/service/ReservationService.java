@@ -14,5 +14,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     public ReadReservationByStoreResponses readReservationByStore(Long storeId){
         List<ReadReservationByStoreResponse> list = reservationRepository.findReservationByStoreId(storeId);
+
+        return ReadReservationByStoreResponses.builder().reservations(list).build();
     }
 }
