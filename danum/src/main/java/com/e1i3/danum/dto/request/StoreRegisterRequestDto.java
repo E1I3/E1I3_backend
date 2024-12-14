@@ -20,7 +20,6 @@ public class StoreRegisterRequestDto {
     private String storeUrl;
     private StoreType storeType;
 
-    private Boolean type;
 
     public Store toEntity(User user) {
         return Store.builder()
