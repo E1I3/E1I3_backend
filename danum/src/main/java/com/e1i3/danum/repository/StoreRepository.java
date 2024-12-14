@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> , StoreRepositoryCustom {
-
+    @Query("SELECT s FROM stores s WHERE s.user.userId = :userId")
+    Store findByUserId(Long userId);
 }
