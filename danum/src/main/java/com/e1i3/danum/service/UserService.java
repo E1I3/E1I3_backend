@@ -25,8 +25,17 @@ public class UserService {
         // 존재 여부 확인
         Boolean isEmailExist = userRepository.existsByEmail(createUserRequest.getEmail());
 
-        if (isEmailExist)
-            throw new NoSuchElementException("유저가 존재합니다.");
+        if (isEmailExist){
+            User user = userRepository.findByEmail(createUserRequest.getEmail()).get(0);
+            Store store = storeRepository.findByUserId(user.getUserId());
+
+            return CreateUserResponse
+                    .builder()
+                    .userId(user.getUserId())
+                    .type(0L)
+                    .storeId(store != null ? store.getStoreId() : null)
+                    .build();
+        }
 
         User user = User.builder()
                 .name(createUserRequest.getName())
