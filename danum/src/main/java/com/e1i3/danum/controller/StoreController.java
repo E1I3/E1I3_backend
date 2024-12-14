@@ -45,9 +45,9 @@ public class StoreController {
 
     // 판매자 등록 API
     @Operation(summary = "판매자 등록", description = "판매자를 등록합니다.")
-    @PostMapping(value = "/seller/register", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> registerSeller(
-            @RequestPart(value = "image", required = false)  MultipartFile file, // 파일 처리
+            @RequestPart("image") MultipartFile file, // 파일 처리
             @RequestPart("store") StoreRegisterRequestDto requestDto // JSON 처리
     ) throws IOException {
         storeService.registerSeller(file, requestDto);
