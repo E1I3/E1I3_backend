@@ -38,6 +38,31 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
         return rests;
     }
 
+    @Override
+    public List<ReadReservationByStoreResponse> findReservationByUserId(Long userId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("SELECT r.resv_id, r.resv_time, r.resv_type, ")
+                .append("p.product_id, p.product_name, p.product_url, p.price, p.count ")
+                .append("FROM reservations r ")
+                .append("JOIN products p ON r.product_id = p.product_id ")
+                .append("JOIN users u ON r.user_id = u.user_id ")
+                .append("WHERE 1=1 ")
+                .append("AND u.user_id = :userId ");
+
+        List<Object []> results = em.createNativeQuery(sb.toString())
+                .setParameter("userId", userId)
+                .getResultList();
+
+        List<ReadReservationByStoreResponse> rests = new ArrayList<>();
+        for (Object[] result : results) {
+            ReadReservationByStoreResponse readReservationByStoreResponse = mapToReadReservationByStoreResponse(result);
+            rests.add(readReservationByStoreResponse);
+        }
+
+        return rests;
+    }
+
     private ReadReservationByStoreResponse mapToReadReservationByStoreResponse(Object[] result) {
         return ReadReservationByStoreResponse.builder()
                 .reserveId(((Number) result[0]).longValue()) // resv_id
