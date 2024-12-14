@@ -39,4 +39,10 @@ public class ReservationService {
                 .count(reservation.getProduct().getCount())
                 .build();
     }
+
+    public ReadReservationByStoreResponses readReservationByUser(Long userId){
+        List<ReadReservationByStoreResponse> list = reservationRepository.findReservationByUserId(userId);
+
+        return ReadReservationByStoreResponses.builder().reservations(list).build();
+    }
 }

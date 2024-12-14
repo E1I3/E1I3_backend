@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class ReservationController {
     private final ReservationService reservationService;
-    @GetMapping("/account/reservation")
+    @GetMapping("/account/reservation/store")
     public ResponseEntity<ReadReservationByStoreResponses> readReservationByStore(@RequestParam Long storeId){
         ReadReservationByStoreResponses result = reservationService.readReservationByStore(storeId);
 
@@ -25,6 +25,13 @@ public class ReservationController {
     @PutMapping("/mypage/sellers/reservation")
     public ResponseEntity<UpdateReservationByReserveResponse> updateReservationByReserveId(@RequestBody UpdateReservationByReserveRequest updateReservationByReserveRequest){
         UpdateReservationByReserveResponse result = reservationService.updateReservationByReserveId(updateReservationByReserveRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/account/reservation/user")
+    public ResponseEntity<ReadReservationByStoreResponses> readReservationByUser(@RequestParam Long userId){
+        ReadReservationByStoreResponses result = reservationService.readReservationByUser(userId);
+
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
