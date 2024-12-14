@@ -37,6 +37,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      ## 기존 application.yml 파일 삭제
+      - name: Delete existing application.yml if exists
+        run: |
+          rm -f ./danum/src/main/resources/application.yml
+        shell: bash
+
       ## resources 폴더 생성
       - name: Create resources folder
         run: |
