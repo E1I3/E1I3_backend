@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @Entity(name = "products")
-@Getter
 @NoArgsConstructor
 public class Product {
 
