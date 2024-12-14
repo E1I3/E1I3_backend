@@ -41,6 +41,7 @@ public class UserService {
                 .name(createUserRequest.getName())
                 .email(createUserRequest.getEmail())
                 .balance(100000L)
+                .donateSum(0L)
                 .build();
 
         User result = userRepository.save(user);
@@ -76,6 +77,8 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("가게를 찾을 수 없습니다. : " + storeId));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다. : " + userId));
+
+
         return new MyPageSellerResponseDto(store, user);
     }
 

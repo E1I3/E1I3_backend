@@ -18,6 +18,8 @@ public class MyPageSellerResponseDto {
     private String storeName;
     private StoreType storeType;
     private String storeAddress;
+    private Long donateSum;
+    private String rewardUrl = "https://danumbucket.s3.ap-northeast-2.amazonaws.com/broze.png";
 
     @Builder
     public MyPageSellerResponseDto(Store store, User user) {
@@ -28,6 +30,17 @@ public class MyPageSellerResponseDto {
         this.storeName = store.getStoreName();
         this.storeType = store.getStoreType();
         this.storeAddress = store.getAddress();
+        this.donateSum = user.getDonateSum();
+        this.renewUrl();
+    }
+
+    public void renewUrl(){
+        if(this.donateSum < 10)
+            this.rewardUrl =  "https://danumbucket.s3.ap-northeast-2.amazonaws.com/broze.png";
+        else if (this.donateSum < 100)
+            this.rewardUrl =  "https://danumbucket.s3.ap-northeast-2.amazonaws.com/sliver.png";
+        else
+            this.rewardUrl =  "https://danumbucket.s3.ap-northeast-2.amazonaws.com/gold.png";
     }
 
 }

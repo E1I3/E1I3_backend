@@ -19,7 +19,8 @@ public class User {
     String email;
     @Column()
     Long balance;
-
+    @Column()
+    Long donateSum;
 }
 
 
