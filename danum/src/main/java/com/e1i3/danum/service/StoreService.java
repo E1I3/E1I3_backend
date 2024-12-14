@@ -42,19 +42,15 @@ public class StoreService {
     public void registerSeller(MultipartFile file, StoreRegisterRequestDto requestDto) throws IOException {
         String storedFileName = s3Uploader.upload(file,"store-images");
         requestDto.setStoreUrl(storedFileName);
-        System.out.println(1);
-        User currentUser = isUser(requestDto.getUserId(),requestDto.getType());
-        System.out.println(2);
+        User currentUser = isUser(requestDto.getUserId());
         Store newStore = requestDto.toEntity(currentUser);
         log.info(requestDto.getUserId().toString());
-        System.out.println(3);
         Store savedStore = storeRepository.save(newStore);
-        System.out.println(4);
     }
 
 
     // 사용자 필터
-    public User isUser(Long userId, Boolean type) {
+    public User isUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }

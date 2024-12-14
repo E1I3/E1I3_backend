@@ -72,7 +72,7 @@ public class ProductService {
 
     // 판매자 필터
     @Transactional
-    public Store isSeller(Long userId, Boolean type) {
+    public Store isSeller(Long userId) {
         User currentUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
         Store store = storeRepository.findByUser(currentUser)
@@ -82,7 +82,7 @@ public class ProductService {
 
     // 사용자 필터
     @Transactional
-    public User isUser(Long userId, Boolean type) {
+    public User isUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
