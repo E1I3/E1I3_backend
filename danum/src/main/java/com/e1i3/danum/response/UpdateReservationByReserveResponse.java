@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReadReservationByStoreResponse {
+public class UpdateReservationByReserveResponse {
     Long reserveId;
     LocalDateTime resvTime;
     ResvType resvType;
@@ -18,5 +18,5 @@ public class ReadReservationByStoreResponse {
     String productName;
     String productUrl;
     Long price;
-    Integer count;
+    Long count;
 }

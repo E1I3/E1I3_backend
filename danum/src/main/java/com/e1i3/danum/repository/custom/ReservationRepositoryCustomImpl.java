@@ -18,7 +18,7 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT r.resv_id, r.resv_time, r.resv_type, ")
-                .append("p.product_id, p.product_name, p.price, p.count ")
+                .append("p.product_id, p.product_name, p.product_url, p.price, p.count ")
                 .append("FROM reservations r ")
                 .append("JOIN products p ON r.product_id = p.product_id ")
                 .append("JOIN stores s ON s.store_id = p.store_id ")
@@ -45,8 +45,9 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
                 .resvType(ResvType.valueOf((String) result[2])) // resv_type
                 .productId(((Number) result[3]).longValue()) // product_id
                 .productName((String) result[4]) // product_name
-                .price(((Number) result[5]).longValue()) // price
-                .count(((Number) result[6]).intValue()) // count
+                .productUrl((String) result[5])
+                .price(((Number) result[6]).longValue()) // price
+                .count(((Number) result[7]).intValue()) // count
                 .build();
     }
 }
