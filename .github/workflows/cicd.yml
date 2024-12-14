@@ -37,6 +37,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      ## 기존 application.yml 파일 삭제
+      - name: Delete existing application.yml if exists
+        run: |
+          rm -f ./danum/src/main/resources/application.yml
+        shell: bash
+
       ## resources 폴더 생성
       - name: Create resources folder
         run: |
@@ -72,7 +78,7 @@ jobs:
           script: |
             docker rm -f $(docker ps -qa)
             docker pull ${{ secrets.DOCKER_USERNAME }}/danum-server
-            docker-compose -f ./danum/docker-compose.yml up -d
+            docker-compose -f ./docker-compose.yml up -d
             docker image prune -f
 
   ## Time

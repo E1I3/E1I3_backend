@@ -9,10 +9,10 @@ import com.e1i3.danum.response.ReadReservationByStoreResponses;
 import com.e1i3.danum.response.UpdateReservationByReserveResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,6 @@ public class ReservationService {
 
         return ReadReservationByStoreResponses.builder().reservations(list).build();
     }
-
     public UpdateReservationByReserveResponse updateReservationByReserveId(UpdateReservationByReserveRequest updateReservationByReserveRequest){
         Reservation reservation = reservationRepository.findById(updateReservationByReserveRequest.getReserveId()).orElseThrow(NoSuchElementException::new);
         reservation.setResvType(ResvType.COMPLETE);

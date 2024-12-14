@@ -3,6 +3,8 @@ package com.e1i3.danum.controller;
 import com.e1i3.danum.request.UpdateReservationByReserveRequest;
 import com.e1i3.danum.response.ReadReservationByStoreResponses;
 import com.e1i3.danum.response.UpdateReservationByReserveResponse;
+import com.e1i3.danum.response.ReadReservationByStoreResponse;
+import com.e1i3.danum.response.ReadStoreResponses;
 import com.e1i3.danum.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
