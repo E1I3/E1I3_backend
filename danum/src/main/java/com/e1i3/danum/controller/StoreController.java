@@ -6,6 +6,7 @@ import com.e1i3.danum.response.ReadStoreResponses;
 import com.e1i3.danum.s3.S3Uploader;
 import com.e1i3.danum.service.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,8 +19,10 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping()
+@Tag(name = "가게 API", description = "가게 관련 기능 API입니다.")
 public class StoreController {
     private final StoreService storeService;
+    @Operation(summary = "위도 경도 + 필터 기반으로 가게 추출", description = "위도 경도 + 필터 기반으로 가게를 추출합니다")
     @GetMapping("/home/store")
     public ResponseEntity<ReadStoreResponses> readStore
             (@RequestParam(value = "location", required = false, defaultValue = "none") String location,
