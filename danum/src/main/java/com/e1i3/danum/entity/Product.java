@@ -23,4 +23,6 @@ public class Product {
     String productUrl;
     @Column()
     TradeType tradeType;
+    @ManyToOne
+    Store store;
 }

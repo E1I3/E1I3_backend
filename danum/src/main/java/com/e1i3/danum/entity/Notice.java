@@ -9,4 +9,6 @@ public class Notice {
     Long noticeId;
     @Column
     String content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    User user;
 }
