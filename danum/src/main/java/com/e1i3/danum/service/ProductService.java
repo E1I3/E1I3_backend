@@ -5,6 +5,7 @@ import com.e1i3.danum.dto.response.ProductResponseDto;
 import com.e1i3.danum.entity.Product;
 import com.e1i3.danum.entity.Store;
 import com.e1i3.danum.entity.User;
+import com.e1i3.danum.enumeration.TradeType;
 import com.e1i3.danum.repository.ProductRepository;
 import com.e1i3.danum.repository.StoreRepository;
 import com.e1i3.danum.repository.UserRepository;
@@ -29,24 +30,40 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+
+    // 거래중인 상품 반환
     @Transactional
     public List<ProductResponseDto> viewProductsById(Long storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 storeId입니다."));
 
-        List<Product> products = productRepository.findByStore(store);
+        List<Product> products = productRepository.findByStoreAndTradeType(store, TradeType.TRADE);
 
         return products.stream()
                 .map(product -> new ProductResponseDto(product))
                 .collect(Collectors.toList());
     }
 
+    // 나눔중인 상품 반환
+    @Transactional
+    public List<ProductResponseDto> viewShareProductsById(Long storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 storeId입니다."));
+
+        List<Product> products = productRepository.findByStoreAndTradeType(store, TradeType.SHARE);
+
+        return products.stream()
+                .map(product -> new ProductResponseDto(product))
+                .collect(Collectors.toList());
+    }
+
+
     // 상품 등록
     @Transactional
     public ProductResponseDto saveProduct(MultipartFile file, ProductSaveRequestDto requestDto) throws IOException, IOException {
-        String storedFileName = s3Uploader.upload(file, "product-images"); // "product-images" 폴더에 업로드
+        String storedFileName = s3Uploader.upload(file, "product-images");
         requestDto.setProductUrl(storedFileName);
-        Store store = storeRepository.findById(requestDto.getUserId()) // Store ID로 Store 객체 가져오기
+        Store store = storeRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("Store not found for user id"));
         Product product = requestDto.toEntity(store, storedFileName);
         Product savedProduct = productRepository.save(product);
@@ -69,6 +86,7 @@ public class ProductService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
+
 
 
 
