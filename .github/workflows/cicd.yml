@@ -33,31 +33,31 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('danum/**/*.gradle*', 'danum/**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
       ## resources 폴더 생성
       - name: Create resources folder
         run: |
-          mkdir -p ./src/main/resources 
+          mkdir -p ./danum/src/main/resources 
 
       ## application.yml 파일 생성
       - name: Create application.yml
         run: |
-          touch ./src/main/resources/application.yml
-          echo "${{secrets.YML_DEV}}" > ./src/main/resources/application.yml
+          touch ./danum/src/main/resources/application.yml
+          echo "${{secrets.YML_DEV}}" > ./danum/src/main/resources/application.yml
         shell: bash
 
       ## Grant execute permission for Gradlew
       - name: Grant Execute Permission For Gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./danum/gradlew
 
       ## Docker 이미지 빌드 & 푸시
       - name: Docker Build and Push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/danum-server.
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/danum-server ./danum
           docker push ${{ secrets.DOCKER_USERNAME }}/danum-server:latest
 
       ## Docker deploy
@@ -72,7 +72,7 @@ jobs:
           script: |
             docker rm -f $(docker ps -qa)
             docker pull ${{ secrets.DOCKER_USERNAME }}/danum-server
-            docker-compose up -d
+            docker-compose -f ./danum/docker-compose.yml up -d
             docker image prune -f
 
   ## Time
