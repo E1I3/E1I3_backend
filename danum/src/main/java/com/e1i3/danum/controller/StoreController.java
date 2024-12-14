@@ -7,6 +7,7 @@ import com.e1i3.danum.service.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,14 +38,15 @@ public class StoreController {
     }
 
 
+
     // 판매자 등록 API
     @Operation(summary = "판매자 등록", description = "판매자를 등록합니다.")
-    @PostMapping(value = "/register", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> registerSeller(
-            @RequestPart("image") MultipartFile file,
-            @RequestPart("store") StoreRegisterRequestDto requestDto
+            @RequestPart("image") MultipartFile file, // 파일 처리
+            @RequestPart("store") StoreRegisterRequestDto requestDto // JSON 처리
     ) throws IOException {
-        storeService.registerSeller(file,requestDto);
+        storeService.registerSeller(file, requestDto);
         System.out.println("유저id" + requestDto.getUserId());
         return ResponseEntity.ok("판매자 등록이 완료되었습니다.");
     }
