@@ -39,3 +39,4 @@ out/
 
 ## ignore file
 env.properties
+application.yml
