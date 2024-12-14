@@ -4,6 +4,7 @@ import com.e1i3.danum.enumeration.StoreStatus;
 import com.e1i3.danum.enumeration.StoreType;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
