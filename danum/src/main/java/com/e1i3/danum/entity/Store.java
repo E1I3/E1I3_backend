@@ -10,6 +10,7 @@ import lombok.Setter;
 @Entity(name = "stores")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Store {
 
     @Builder
