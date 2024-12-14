@@ -16,6 +16,7 @@ public class ReadReservationByStoreResponse {
     ResvType resvType;
     Long productId;
     String productName;
+    String productUrl;
     Long price;
     Integer count;
 }
