@@ -22,6 +22,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     public CreateUserResponse createUser(CreateUserRequest createUserRequest){
+        // 존재 여부 확인
+        Boolean isEmailExist = userRepository.existsByEmail(createUserRequest.getEmail());
+
+        if (isEmailExist)
+            throw new NoSuchElementException("유저가 존재합니다.");
+
         User user = User.builder()
                 .name(createUserRequest.getName())
                 .email(createUserRequest.getEmail())
