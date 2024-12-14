@@ -1,6 +1,7 @@
 package com.e1i3.danum.controller;
 
 import com.e1i3.danum.dto.request.StoreRegisterRequestDto;
+import com.e1i3.danum.request.UpdateTradeInfoRequest;
 import com.e1i3.danum.response.ReadStoreResponses;
 import com.e1i3.danum.s3.S3Uploader;
 import com.e1i3.danum.service.StoreService;
@@ -47,5 +48,6 @@ public class StoreController {
         storeService.registerSeller(file,requestDto);
         return ResponseEntity.ok("판매자 등록이 완료되었습니다.");
     }
+
 
 }
