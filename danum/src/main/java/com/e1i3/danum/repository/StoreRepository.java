@@ -1,11 +1,14 @@
 package com.e1i3.danum.repository;
 
 import com.e1i3.danum.entity.Store;
-import com.e1i3.danum.entity.User;
+import com.e1i3.danum.repository.custom.StoreRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface StoreRepository extends JpaRepository<Store, Long> {
-    Optional<Store> findByUser(User currentUser);
+@Repository
+public interface StoreRepository extends JpaRepository<Store, Long> , StoreRepositoryCustom {
+
 }

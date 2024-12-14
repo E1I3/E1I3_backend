@@ -13,6 +13,7 @@ public class Reservation {
     @Column()
     LocalDateTime resvTime;
     @Column()
+    @Enumerated(EnumType.STRING)
     ResvType resvType;
     @Column()
     Long count;

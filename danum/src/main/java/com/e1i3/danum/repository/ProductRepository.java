@@ -1,11 +1,9 @@
 package com.e1i3.danum.repository;
 
 import com.e1i3.danum.entity.Product;
-import com.e1i3.danum.entity.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByStore(Store store);
 }
