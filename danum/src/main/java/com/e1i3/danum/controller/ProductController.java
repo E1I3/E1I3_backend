@@ -2,6 +2,7 @@ package com.e1i3.danum.controller;
 
 import com.e1i3.danum.dto.request.ProductSaveRequestDto;
 import com.e1i3.danum.dto.response.ProductResponseDto;
+import com.e1i3.danum.response.ReadStoreAndProductResponse;
 import com.e1i3.danum.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,17 +26,17 @@ public class ProductController {
     // 판매자 상품 조회
     @Operation(summary = "가게 거래 상품 조회", description = "가게 ID로 상품을 조회합니다.")
     @GetMapping("/view/trade/{storeId}")
-    public ResponseEntity<List<ProductResponseDto>> viewProducts(@PathVariable Long storeId){
-        List<ProductResponseDto> productList = productService.viewProductsById(storeId);
-        return ResponseEntity.ok(productList);
+    public ResponseEntity<ReadStoreAndProductResponse> viewProducts(@PathVariable Long storeId){
+        ReadStoreAndProductResponse readStoreAndProductResponse = productService.viewProductsById(storeId);
+        return ResponseEntity.ok(readStoreAndProductResponse);
     }
 
     // 판매자 상품 조회
     @Operation(summary = "가게 나눔 상품 조회", description = "가게 ID로 상품을 조회합니다.")
     @GetMapping("/view/share/{storeId}")
-    public ResponseEntity<List<ProductResponseDto>> viewShareProducts(@PathVariable Long storeId){
-        List<ProductResponseDto> productList = productService.viewShareProductsById(storeId);
-        return ResponseEntity.ok(productList);
+    public ResponseEntity<ReadStoreAndProductResponse> viewShareProducts(@PathVariable Long storeId){
+        ReadStoreAndProductResponse readStoreAndProductResponse = productService.viewShareProductsById(storeId);
+        return ResponseEntity.ok(readStoreAndProductResponse);
     }
 
     // 판매자 상품 등록
