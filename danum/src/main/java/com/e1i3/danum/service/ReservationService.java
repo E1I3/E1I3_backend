@@ -77,6 +77,10 @@ public class ReservationService {
         user.setBalance(user.getBalance() - product.getPrice() * updateTradeInfoRequest.getCount());
         user = userRepository.save(user);
 
+        User owner = product.getStore().getUser();
+        owner.setBalance(owner.getBalance() + updateTradeInfoRequest.getCount() * product.getPrice());
+        userRepository.save(owner);
+
         Reservation reservation = Reservation.builder()
                 .resvTime(LocalDateTime.now())
                 .count(updateTradeInfoRequest.getCount())
