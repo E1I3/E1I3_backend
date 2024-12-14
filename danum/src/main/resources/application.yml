@@ -1,15 +1,14 @@
 spring:
   application:
     name: danum
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: yml.file.datasource.url
-    username: yml.file.datasource.username
-    password: yml.file.datasource.password
+    url: jdbc:mysql://server-db.cjmsgmwkyz43.ap-northeast-2.rds.amazonaws.com:3306/serverdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: serverdb1214
 
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     show-sql: true
     properties:
       hibernate:
