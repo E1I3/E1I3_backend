@@ -2,9 +2,13 @@ package com.e1i3.danum.entity;
 
 import com.e1i3.danum.enumeration.ResvType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity(name = "reservations")
 public class Reservation {
     @Id
