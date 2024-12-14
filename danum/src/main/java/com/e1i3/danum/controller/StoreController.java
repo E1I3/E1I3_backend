@@ -42,9 +42,10 @@ public class StoreController {
     @PostMapping(value = "/register", consumes = {"multipart/form-data"})
     public ResponseEntity<String> registerSeller(
             @RequestPart("image") MultipartFile file,
-            @ModelAttribute StoreRegisterRequestDto requestDto
+            @RequestBody StoreRegisterRequestDto requestDto
     ) throws IOException {
         storeService.registerSeller(file,requestDto);
+        System.out.println("유저id" + requestDto.getUserId());
         return ResponseEntity.ok("판매자 등록이 완료되었습니다.");
     }
 
