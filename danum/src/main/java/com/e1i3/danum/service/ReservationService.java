@@ -36,6 +36,13 @@ public class ReservationService {
         reservation.setResvType(ResvType.COMPLETE);
         reservationRepository.save(reservation);
 
+        // 나눔일 경우, donateSum 추가
+        if (reservation.getProduct().getTradeType() == TradeType.SHARE){
+            User user = reservation.getProduct().getStore().getUser();
+            user.setDonateSum(user.getDonateSum() + 1);
+            userRepository.save(user);
+        }
+
         return UpdateReservationByReserveResponse.builder()
                 .reserveId(reservation.getResvId())
                 .resvTime(reservation.getResvTime())
