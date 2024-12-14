@@ -63,7 +63,7 @@ public class ProductService {
     public ProductResponseDto saveProduct(MultipartFile file, ProductSaveRequestDto requestDto) throws IOException, IOException {
         String storedFileName = s3Uploader.upload(file, "product-images");
         requestDto.setProductUrl(storedFileName);
-        Store store = storeRepository.findById(requestDto.getUserId())
+        Store store = storeRepository.findByUser(isUser(requestDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Store not found for user id"));
         Product product = requestDto.toEntity(store, storedFileName);
         Product savedProduct = productRepository.save(product);
