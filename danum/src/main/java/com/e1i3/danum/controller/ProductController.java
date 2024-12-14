@@ -33,10 +33,9 @@ public class ProductController {
     @Operation(summary = "판매자 상품 등록", description = "상품을 등록합니다.")
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     public ResponseEntity<ProductResponseDto> saveProduct(
-            @RequestPart("image") MultipartFile image,  // 파일 업로드
-            @ModelAttribute ProductSaveRequestDto requestDto  // 폼 데이터
+            @RequestPart("image") MultipartFile image,
+            @ModelAttribute ProductSaveRequestDto requestDto
     ) throws IOException {
-        // 상품 저장 서비스 호출
         ProductResponseDto responseDto = productService.saveProduct(image, requestDto);
         return ResponseEntity.ok(responseDto);
     }
