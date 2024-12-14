@@ -50,4 +50,6 @@ public class UserService {
                 .storeId(updateStatusToStoreRequest.getStoreId())
                 .build();
     }
+
+
 }
