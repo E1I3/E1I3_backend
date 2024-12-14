@@ -14,3 +14,5 @@ public class User {
     @Column()
     Long valance;
 }
+
+
