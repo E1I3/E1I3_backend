@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ReservationRepositoryCustom {
     List<ReadReservationByStoreResponse> findReservationByStoreId(Long storeId);
+    List<ReadReservationByStoreResponse> findReservationByUserId(Long userId);
 }
