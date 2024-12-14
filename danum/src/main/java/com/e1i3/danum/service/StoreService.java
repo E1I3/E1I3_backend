@@ -1,10 +1,14 @@
 package com.e1i3.danum.service;
 
 import com.e1i3.danum.dto.request.StoreRegisterRequestDto;
+import com.e1i3.danum.entity.Product;
+import com.e1i3.danum.entity.Reservation;
 import com.e1i3.danum.entity.Store;
 import com.e1i3.danum.entity.User;
+import com.e1i3.danum.repository.ProductRepository;
 import com.e1i3.danum.repository.StoreRepository;
 import com.e1i3.danum.repository.UserRepository;
+import com.e1i3.danum.request.UpdateTradeInfoRequest;
 import com.e1i3.danum.response.ReadStoreResponses;
 import com.e1i3.danum.s3.S3Uploader;
 import jakarta.transaction.Transactional;
@@ -15,12 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final ProductRepository productRepository;
 
     private final S3Uploader s3Uploader;
 

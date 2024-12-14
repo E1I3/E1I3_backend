@@ -1,6 +1,7 @@
 package com.e1i3.danum.controller;
 
 import com.e1i3.danum.request.UpdateReservationByReserveRequest;
+import com.e1i3.danum.request.UpdateTradeInfoRequest;
 import com.e1i3.danum.response.ReadReservationByStoreResponses;
 import com.e1i3.danum.response.UpdateReservationByReserveResponse;
 import com.e1i3.danum.response.ReadReservationByStoreResponse;
@@ -33,5 +34,11 @@ public class ReservationController {
         ReadReservationByStoreResponses result = reservationService.readReservationByUser(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+    @PutMapping("/home/store/trade")
+    public ResponseEntity<Void> updateTradeInfo(@RequestBody UpdateTradeInfoRequest updateTradeInfoRequest){
+        reservationService.updateTradeInfo(updateTradeInfoRequest);
+
+        return ResponseEntity.ok().build();
     }
 }
