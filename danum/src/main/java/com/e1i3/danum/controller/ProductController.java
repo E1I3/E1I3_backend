@@ -6,6 +6,7 @@ import com.e1i3.danum.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,10 +40,10 @@ public class ProductController {
 
     // 판매자 상품 등록
     @Operation(summary = "판매자 상품 등록", description = "상품을 등록합니다.")
-    @PostMapping(value = "/save", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductResponseDto> saveProduct(
             @RequestPart("image") MultipartFile image,
-            @ModelAttribute ProductSaveRequestDto requestDto
+            @RequestPart("product") ProductSaveRequestDto requestDto
     ) throws IOException {
         ProductResponseDto responseDto = productService.saveProduct(image, requestDto);
         return ResponseEntity.ok(responseDto);

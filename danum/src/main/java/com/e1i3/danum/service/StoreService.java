@@ -43,7 +43,7 @@ public class StoreService {
         String storedFileName = s3Uploader.upload(file,"store-images");
         requestDto.setStoreUrl(storedFileName);
         System.out.println(1);
-        User currentUser = isUser(requestDto.getUserId(),requestDto.getType());
+        User currentUser = isUser(requestDto.getUserId());
         System.out.println(2);
         Store newStore = requestDto.toEntity(currentUser);
         log.info(requestDto.getUserId().toString());
@@ -54,7 +54,7 @@ public class StoreService {
 
 
     // 사용자 필터
-    public User isUser(Long userId, Boolean type) {
+    public User isUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
