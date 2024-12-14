@@ -16,8 +16,10 @@ public class Reservation {
     ResvType resvType;
     @Column()
     Long count;
+    @JoinColumn(name = "user_id")
     @ManyToOne
     User user;
-    @ManyToOne
+    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     Product product;
 }

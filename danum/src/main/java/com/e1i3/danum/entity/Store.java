@@ -23,6 +23,7 @@ public class Store {
     StoreStatus storeStatus;
     @Column()
     String store_url;
+    @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY)
     User user;
 }
