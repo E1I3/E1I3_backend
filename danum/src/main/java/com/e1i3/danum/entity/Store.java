@@ -23,4 +23,6 @@ public class Store {
     StoreStatus storeStatus;
     @Column()
     String store_url;
+    @OneToOne(fetch = FetchType.LAZY)
+    User user;
 }

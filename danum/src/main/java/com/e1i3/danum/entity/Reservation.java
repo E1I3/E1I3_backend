@@ -16,4 +16,8 @@ public class Reservation {
     ResvType resvType;
     @Column()
     Long count;
+    @ManyToOne
+    User user;
+    @ManyToOne
+    Product product;
 }
