@@ -24,8 +24,6 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
                 .append(name)
                 .append("%\"\n");
         //
-        System.out.println(categories.length);
-        System.out.println();
 
         if (!categories[0].equals("none"))
             for (String category : categories)
