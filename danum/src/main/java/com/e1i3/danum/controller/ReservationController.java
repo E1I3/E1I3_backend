@@ -41,4 +41,10 @@ public class ReservationController {
 
         return ResponseEntity.ok().build();
     }
+    @PutMapping("/home/store/share")
+    public ResponseEntity<Void> updateShareInfo(@RequestBody UpdateTradeInfoRequest updateTradeInfoRequest){
+        reservationService.updateShareInfo(updateTradeInfoRequest);
+
+        return ResponseEntity.ok().build();
+    }
 }

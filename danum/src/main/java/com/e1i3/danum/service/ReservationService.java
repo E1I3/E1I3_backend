@@ -4,6 +4,7 @@ import com.e1i3.danum.entity.Product;
 import com.e1i3.danum.entity.Reservation;
 import com.e1i3.danum.entity.User;
 import com.e1i3.danum.enumeration.ResvType;
+import com.e1i3.danum.enumeration.TradeType;
 import com.e1i3.danum.repository.ProductRepository;
 import com.e1i3.danum.repository.ReservationRepository;
 import com.e1i3.danum.repository.UserRepository;
@@ -54,16 +55,18 @@ public class ReservationService {
     }
 
     public void updateTradeInfo(UpdateTradeInfoRequest updateTradeInfoRequest){
-        // 상품 수량이 충분한지 확인
+        // 상품이 거래 타입인지 확인
         Product product = productRepository.findById(updateTradeInfoRequest.getProductId()).orElseThrow(NoSuchElementException::new);
+
+        if(product.getTradeType() != TradeType.TRADE)
+            throw new IllegalArgumentException("제품 타입이 나눔인 경우 예외 처리");
+
+        // 상품 수량이 충분한지 확인
         if (updateTradeInfoRequest.getCount() > product.getCount())
             throw new IllegalArgumentException("기존 수량보다 요구 수량이 많은 경우 예외 처리");
 
         // 구매자의 잔액이 충분한지 확인
         User user = userRepository.findById(updateTradeInfoRequest.getUserId()).orElseThrow(NoSuchElementException::new);
-        System.out.println(product.getPrice());
-        System.out.println(updateTradeInfoRequest.getCount());
-        System.out.println(user.getBalance());
         if (product.getPrice() * updateTradeInfoRequest.getCount() > user.getBalance())
             throw new IllegalArgumentException("사용자의 잔액이 충분하지 않은 경우 예외 처리");
 
@@ -84,4 +87,32 @@ public class ReservationService {
 
         reservationRepository.save(reservation);
     }
+    public void updateShareInfo(UpdateTradeInfoRequest updateTradeInfoRequest){
+        // 상품이 나눔 타입인지 확인
+        Product product = productRepository.findById(updateTradeInfoRequest.getProductId()).orElseThrow(NoSuchElementException::new);
+        if(product.getTradeType() != TradeType.SHARE)
+            throw new IllegalArgumentException("제품 타입이 거래인 경우 예외 처리");
+
+        // 상품 수량이 충분한지 확인
+        if (updateTradeInfoRequest.getCount() > product.getCount())
+            throw new IllegalArgumentException("기존 수량보다 요구 수량이 많은 경우 예외 처리");
+
+        // 구매자의 잔액이 충분한지 확인
+        User user = userRepository.findById(updateTradeInfoRequest.getUserId()).orElseThrow(NoSuchElementException::new);
+
+        // 실행
+        product.setCount(product.getCount() - updateTradeInfoRequest.getCount());
+        product = productRepository.save(product);
+
+        Reservation reservation = Reservation.builder()
+                .resvTime(LocalDateTime.now())
+                .count(updateTradeInfoRequest.getCount())
+                .user(user)
+                .product(product)
+                .resvType(ResvType.TRADE)
+                .build();
+
+        reservationRepository.save(reservation);
+    }
+
 }
