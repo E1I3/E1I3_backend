@@ -14,6 +14,7 @@ import lombok.Setter;
 public class ProductSaveRequestDto {
 
     private Long userId;
+    private Boolean type;
     private String name;
     private String productUrl;
     private Long count;
