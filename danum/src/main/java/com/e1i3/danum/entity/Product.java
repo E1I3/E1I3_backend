@@ -3,10 +3,12 @@ package com.e1i3.danum.entity;
 import com.e1i3.danum.enumeration.ProductType;
 import com.e1i3.danum.enumeration.TradeType;
 import jakarta.persistence.*;
+import lombok.Setter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+@Getter
+@Setter
 @Entity(name = "products")
 @Getter
 @NoArgsConstructor
