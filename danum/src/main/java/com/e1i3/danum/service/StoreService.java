@@ -1,23 +1,50 @@
 package com.e1i3.danum.service;
 
+import com.e1i3.danum.dto.request.StoreRegisterRequestDto;
 import com.e1i3.danum.entity.Store;
+import com.e1i3.danum.entity.User;
 import com.e1i3.danum.repository.StoreRepository;
+import com.e1i3.danum.repository.UserRepository;
 import com.e1i3.danum.response.ReadStoreResponses;
+import com.e1i3.danum.s3.S3Uploader;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
+
+    private final S3Uploader s3Uploader;
+
+    private final UserRepository userRepository;
     public ReadStoreResponses readStore(Float latitude, Float longitude, String name, String[] categories){
         List<Store> stores = storeRepository.readStoreUsingFilter(latitude, longitude, name, categories);
 
         return ReadStoreResponses.toDto(stores);
     }
 
+    // 판매자 등록 API
+    @Transactional
+    public void registerSeller(MultipartFile file, StoreRegisterRequestDto requestDto) throws IOException {
+        String storedFileName = s3Uploader.upload(file,"store-images");
+        requestDto.setStoreUrl(storedFileName);
+        User currentUser = isUser(requestDto.getUserId(),requestDto.getType());
+        Store newStore = requestDto.toEntity(currentUser);
+        Store savedStore = storeRepository.save(newStore);
+    }
+
+
+    // 사용자 필터
+    public User isUser(Long userId, Boolean type) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    }
 }
 
 

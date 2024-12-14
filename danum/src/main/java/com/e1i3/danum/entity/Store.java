@@ -3,6 +3,7 @@ package com.e1i3.danum.entity;
 import com.e1i3.danum.enumeration.StoreStatus;
 import com.e1i3.danum.enumeration.StoreType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Store {
+
+    @Builder
+    public Store(Long storeId, String storeName, StoreType storeType, String address, Float latitude, Float longitude, StoreStatus storeStatus, String storeUrl, User user) {
+        this.storeId = storeId;
+        this.storeName = storeName;
+        this.storeType = storeType;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.storeStatus = storeStatus;
+        this.storeUrl = storeUrl;
+        this.user = user;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long storeId;
@@ -32,4 +47,6 @@ public class Store {
     @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY)
     User user;
+
+
 }

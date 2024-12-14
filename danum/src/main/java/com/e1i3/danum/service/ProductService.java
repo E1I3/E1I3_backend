@@ -61,9 +61,9 @@ public class ProductService {
     // 상품 등록
     @Transactional
     public ProductResponseDto saveProduct(MultipartFile file, ProductSaveRequestDto requestDto) throws IOException, IOException {
-        String storedFileName = s3Uploader.upload(file, "product-images"); // "product-images" 폴더에 업로드
+        String storedFileName = s3Uploader.upload(file, "product-images");
         requestDto.setProductUrl(storedFileName);
-        Store store = storeRepository.findById(requestDto.getUserId()) // Store ID로 Store 객체 가져오기
+        Store store = storeRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("Store not found for user id"));
         Product product = requestDto.toEntity(store, storedFileName);
         Product savedProduct = productRepository.save(product);
