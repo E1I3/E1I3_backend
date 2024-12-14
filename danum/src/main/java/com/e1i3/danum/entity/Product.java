@@ -23,6 +23,7 @@ public class Product {
     String productUrl;
     @Column()
     TradeType tradeType;
-    @ManyToOne
+    @JoinColumn(name = "store_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     Store store;
 }
