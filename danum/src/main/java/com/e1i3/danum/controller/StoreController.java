@@ -42,7 +42,7 @@ public class StoreController {
     @PostMapping(value = "/register", consumes = {"multipart/form-data"})
     public ResponseEntity<String> registerSeller(
             @RequestPart("image") MultipartFile file,
-            @RequestBody StoreRegisterRequestDto requestDto
+            @RequestPart("store") StoreRegisterRequestDto requestDto
     ) throws IOException {
         storeService.registerSeller(file,requestDto);
         System.out.println("유저id" + requestDto.getUserId());
