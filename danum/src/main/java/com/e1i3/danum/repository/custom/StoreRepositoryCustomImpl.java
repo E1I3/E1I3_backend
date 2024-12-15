@@ -17,7 +17,8 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
     public List<Store> readStoreUsingFilter(Float latitude, Float longitude, String name, String[] categories) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("select *\n")
+        sb.append("SELECT s.store_id, s.store_name, s.address, ")
+                .append("s.latitude, s.longitude, s.store_status, s.store_url\n")
                 .append("from stores s\n")
                 .append("where 1=1\n")
                 .append("and store_name like \"%")
@@ -58,12 +59,12 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
     private Store mapToStore(Object[] result) {
         Store store = new Store();
         store.setStoreId(((Number) result[0]).longValue()); // ID 매핑
-        store.setStoreName((String) result[4]); // storeName 매핑
-        store.setAddress((String) result[1]); // address 매핑
-        store.setLatitude(((Number) result[2]).floatValue()); // latitude 매핑
-        store.setLongitude(((Number) result[3]).floatValue()); // longitude 매핑
+        store.setStoreName((String) result[1]); // storeName 매핑
+        store.setAddress((String) result[2]); // address 매핑
+        store.setLatitude(((Number) result[3]).floatValue()); // latitude 매핑
+        store.setLongitude(((Number) result[4]).floatValue()); // longitude 매핑
         store.setStoreStatus(StoreStatus.valueOf(String.valueOf(result[5]))); // Float를 String으로 변환 후 매핑
-        store.setStoreUrl((String) result[7]); // URL 매핑
+        store.setStoreUrl((String) result[6]); // URL 매핑
         return store;
     }
 }
