@@ -38,7 +38,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
                 .append("+ COS(RADIANS(")
                 .append(latitude)
                 .append(")) * COS(RADIANS(s.latitude))")
-                .append("* POWER(SIN(RADIANS(s.longtitude - ")
+                .append("* POWER(SIN(RADIANS(s.longitude - ")
                 .append(longitude)
                 .append(")), 2)))) <= ")
                 .append(1)
