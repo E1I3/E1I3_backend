@@ -9,6 +9,8 @@ import com.e1i3.danum.enumeration.TradeType;
 import com.e1i3.danum.repository.ProductRepository;
 import com.e1i3.danum.repository.StoreRepository;
 import com.e1i3.danum.repository.UserRepository;
+import com.e1i3.danum.response.ReadProductResponse;
+import com.e1i3.danum.response.ReadStoreAndProductResponse;
 import com.e1i3.danum.s3.S3Uploader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,28 +36,62 @@ public class ProductService {
 
     // 거래중인 상품 반환
     @Transactional
-    public List<ProductResponseDto> viewProductsById(Long storeId) {
+    public ReadStoreAndProductResponse viewProductsById(Long storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 storeId입니다."));
 
-        List<Product> products = productRepository.findByStoreAndTradeType(store, TradeType.TRADE);
+        List<Product> products = productRepository.findByStoreId(store.getStoreId());
+        products = products.stream().filter(it -> it.getCount() > 0 && it.getTradeType() == TradeType.TRADE).collect(Collectors.toList());
 
-        return products.stream()
-                .map(product -> new ProductResponseDto(product))
-                .collect(Collectors.toList());
+        List<ReadProductResponse> readProductResponses = new ArrayList<>();
+
+        for (Product product: products){
+            readProductResponses.add(ReadProductResponse.builder()
+                            .productId(product.getProductId())
+                            .productName(product.getProductName())
+                            .productUrl(product.getProductUrl())
+                            .productPrice(product.getPrice())
+                            .productCount(product.getCount())
+                    .build());
+        }
+
+        return ReadStoreAndProductResponse.builder()
+                .storeId(store.getStoreId())
+        .storeUrl(store.getStoreUrl())
+        .storeAddress(store.getAddress())
+        .storeName(store.getStoreName())
+                .products(readProductResponses)
+                .build();
     }
 
     // 나눔중인 상품 반환
     @Transactional
-    public List<ProductResponseDto> viewShareProductsById(Long storeId) {
+    public ReadStoreAndProductResponse viewShareProductsById(Long storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 storeId입니다."));
 
-        List<Product> products = productRepository.findByStoreAndTradeType(store, TradeType.SHARE);
+        List<Product> products = productRepository.findByStoreId(store.getStoreId());
+        products = products.stream().filter(it -> it.getCount() > 0 && it.getTradeType() == TradeType.SHARE).collect(Collectors.toList());
 
-        return products.stream()
-                .map(product -> new ProductResponseDto(product))
-                .collect(Collectors.toList());
+        List<ReadProductResponse> readProductResponses = new ArrayList<>();
+
+        for (Product product: products){
+            readProductResponses.add(ReadProductResponse.builder()
+                    .productId(product.getProductId())
+                    .productName(product.getProductName())
+                    .productUrl(product.getProductUrl())
+                    .productPrice(product.getPrice())
+                    .productCount(product.getCount())
+                    .build());
+        }
+
+        return ReadStoreAndProductResponse.builder()
+                .storeId(store.getStoreId())
+                .storeUrl(store.getStoreUrl())
+                .storeAddress(store.getAddress())
+                .storeName(store.getStoreName())
+                .products(readProductResponses)
+                .build();
     }
 
 
@@ -63,7 +100,7 @@ public class ProductService {
     public ProductResponseDto saveProduct(MultipartFile file, ProductSaveRequestDto requestDto) throws IOException, IOException {
         String storedFileName = s3Uploader.upload(file, "product-images");
         requestDto.setProductUrl(storedFileName);
-        Store store = storeRepository.findById(requestDto.getUserId())
+        Store store = storeRepository.findByUser(isUser(requestDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Store not found for user id"));
         Product product = requestDto.toEntity(store, storedFileName);
         Product savedProduct = productRepository.save(product);
@@ -72,7 +109,7 @@ public class ProductService {
 
     // 판매자 필터
     @Transactional
-    public Store isSeller(Long userId, Boolean type) {
+    public Store isSeller(Long userId) {
         User currentUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
         Store store = storeRepository.findByUser(currentUser)
@@ -82,7 +119,7 @@ public class ProductService {
 
     // 사용자 필터
     @Transactional
-    public User isUser(Long userId, Boolean type) {
+    public User isUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }

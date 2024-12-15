@@ -22,10 +22,26 @@ public class UserService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     public CreateUserResponse createUser(CreateUserRequest createUserRequest){
+        // 존재 여부 확인
+        Boolean isEmailExist = userRepository.existsByEmail(createUserRequest.getEmail());
+
+        if (isEmailExist){
+            User user = userRepository.findByEmail(createUserRequest.getEmail()).get(0);
+            Store store = storeRepository.findByUserId(user.getUserId());
+
+            return CreateUserResponse
+                    .builder()
+                    .userId(user.getUserId())
+                    .type(0L)
+                    .storeId(store != null ? store.getStoreId() : null)
+                    .build();
+        }
+
         User user = User.builder()
                 .name(createUserRequest.getName())
                 .email(createUserRequest.getEmail())
                 .balance(100000L)
+                .donateSum(0L)
                 .build();
 
         User result = userRepository.save(user);
@@ -61,6 +77,8 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("가게를 찾을 수 없습니다. : " + storeId));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다. : " + userId));
+
+
         return new MyPageSellerResponseDto(store, user);
     }
 
